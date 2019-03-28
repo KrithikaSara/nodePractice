@@ -1,19 +1,22 @@
-var express = require('express');
-var chalk = require('chalk');
-// var debug = require('debug')('app');
-var morgan = require('morgan');
-var path = require('path')
+const express = require('express');
+const chalk = require('chalk');
+// const debug = require('debug')('app');
+const morgan = require('morgan');
+const path = require('path');
 
-var app = express();
+const app = express();
+const port=process.env.PORT || 3000;
 
+app.use(morgan('tiny'));
 
-app.use(morgan('combined'));
+app.use(express.static(path.join(__dirname, '/public/')));
+app.set('views', '.src/views');
+app.set('view engine', 'pug');
 
-app.use(express.static(path.join(__dirname,'/public/')))
-app.get('/',(req,res)=>{
-    res.sendFile(path.join(__dirname,'views/index.html'));
+app.get('/', (req, res) => {
+    res.render('index');
 })
 
-app.listen(3000,()=>{
-    console.log(`listening on port ${chalk.green('3000')}`);
+app.listen(port, () => {
+    console.log(`listening on port ${chalk.green(port)}`);
 });
